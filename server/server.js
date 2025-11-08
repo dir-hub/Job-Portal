@@ -5,9 +5,9 @@ import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './config/db.js'
 import { clerkWebhooks } from './controllers/webhooks.js';
-import companyRoutes from
-'./routes/companyRoutes.js'
+import { companyRoutes, jobRoutes, userRoutes } from './routes/index.js'
 import connectCloudinary from './config/cloudnary.js';
+import {clerkMiddleware} from '@clerk/express'
 
 // Initialize Express
 const app = express()
@@ -19,6 +19,7 @@ await connectCloudinary()
 //Middlewares
 app.use(cors())
 app.use(express.json())
+app.use(clerkMiddleware())
 
 //Routes
 app.get('/',(req,res) => res.send("API Working"))
@@ -27,6 +28,8 @@ app.get("/debug-sentry", function mainHandler(req, res) {
 });
 app.post("/webhooks",clerkWebhooks)
 app.use('/api/company',companyRoutes)
+app.use('/api/jobs',jobRoutes)
+app.use('/api/users',userRoutes)
 
 
 //Port
