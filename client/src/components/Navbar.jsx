@@ -14,8 +14,8 @@ const Navbar = () => {
       <div className='container px-4 2xl:px-20 mx-auto flex justify-between items-center'>
         <img onClick={()=>navigate('/')} className='cursor-pointer' src={assets.logo} alt="" />
         {
-          user ? <div className='flex items-center gap-3'>
-            <Link to={'/applications'}>Applied Jobs</Link>
+          user ? <div className='flex items-center gap-3 '>
+            <Link to={'/applications'} className='bg-blue-100 rounded-md p-1'>Applied Jobs</Link>
             <p>|</p>
             <p className='max-sm:hidden'>Hi, {user.firstName+" " +user.lastName}</p>
             <UserButton/>

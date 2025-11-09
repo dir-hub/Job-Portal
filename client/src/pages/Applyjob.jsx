@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
-import { assets, jobsData } from '../assets/assets'
+import { assets } from '../assets/assets'
 import Loading from '../components/Loading'
 import Navbar from '../components/Navbar'
 import JobCard from '../components/JobCard'
@@ -15,8 +15,13 @@ import { useAuth, useUser } from '@clerk/clerk-react'
 const Applyjob = () => {
   const { id } = useParams()
 
+  const navigate =useNavigate()
+
   const [jobData, setJobData] = useState(null)
-  const { jobs,backendUrl,userData,userApplications } = useContext(AppContext)
+  const [isAlreadyApplied, setIsAlreadyApplied] =useState(false)
+
+
+  const { jobs,backendUrl,userData,userApplications, fetchUserApplications } = useContext(AppContext)
   const { getToken } = useAuth()
   const { user } = useUser()
 
@@ -42,14 +47,16 @@ const Applyjob = () => {
       }
 
       if (!userData || !userData.resume) {
+        navigate('/applications')
         return toast.error('Upload resume to apply')
       }
 
       const token = await getToken();
-      const {data} = await axios.post(backendUrl + '/api/users/apply', {jobId: id}, {headers: {Authorization: `Bearer ${token}`}})
+      const {data} = await axios.post(backendUrl + '/api/users/apply', {jobId:jobData._id}, {headers: {Authorization: `Bearer ${token}`}})
 
       if (data.success) {
         toast.success('Applied Successfully')
+        fetchUserApplications()
       } else {
         toast.error(data.message)
       }
@@ -57,12 +64,25 @@ const Applyjob = () => {
       toast.error(error.message)
     }
   }
+
+  const checkAlreadyApplied = () =>{
+    const hasApplied = userApplications.some(item => item.jobId._id === jobData._id)
+    setIsAlreadyApplied(hasApplied)
+
+
+  }
   useEffect(() => {
    
       fetchJob()
     
 
   }, [id])
+
+  useEffect(()=>{
+    if (userApplications.length > 0 && jobData) {
+      checkAlreadyApplied()
+    }
+  },[jobData,userApplications, id])
 
 
   return jobData ? (
@@ -102,7 +122,7 @@ text-gray-600 mt-2'>
             </div>
             <div className='flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center'>
               <button onClick={applyHandler} className='bg-blue-600 hover:bg-blue-500 p-2.5 px-10
-text-white rounded cursor-pointer'>Apply Now</button>
+text-white rounded cursor-pointer'>{isAlreadyApplied ? 'Already Applied' : 'Apply Now'}</button>
               <p className='mt-1 text-gray-600'>Posted {moment(jobData.date).fromNow()}</p>
             </div>
 
@@ -112,12 +132,17 @@ text-white rounded cursor-pointer'>Apply Now</button>
               <h2 className='font-bold text-2xl mb-4'>Job description</h2>
               <div className='rich-text' dangerouslySetInnerHTML={{__html:jobData.description}}></div>
               <button onClick={applyHandler} className='bg-blue-600 hover:bg-blue-500 p-2.5 px-10
-text-white rounded cursor-pointer mt-10'>Apply Now</button>
+text-white rounded cursor-pointer mt-10'>{isAlreadyApplied ? 'Already Applied' : 'Apply Now'}</button>
             </div>
             {/*right section more jobs*/}
             <div className='w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 space-y-5'>
               <h2>More jobs from {jobData.companyId.name}</h2>
-              {jobs.filter(job =>job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job =>true).slice(0,4).map((job,index) => <JobCard key={index} job={job}/>)}
+              {jobs.filter(job =>job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job => {
+                //set of applied jobsIds
+                const appliedJobsIds = new Set(userApplications.map(app => app.jobId && app.jobId._id))
+                // Return true if the user has not already applied for this job
+                return !appliedJobsIds.has(job._id)
+              }).slice(0,4).map((job,index) => <JobCard key={index} job={job}/>)}
             </div>
           </div>
         </div>

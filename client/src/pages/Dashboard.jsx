@@ -71,7 +71,7 @@ hover:bg-gray-100 ${isActive && 'bg-blue-100 border-r-4 border-blue-500'}`} to={
                         </NavLink>
                     </ul>
                 </div>
-                <div>
+                <div className='flex-1 h-full p-2 sm:p-5'>
                     <Outlet/>
                 </div>
 

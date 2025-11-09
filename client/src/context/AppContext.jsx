@@ -6,7 +6,27 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth,useUser } from "@clerk/clerk-react";
 
-export const AppContext = createContext();
+export const AppContext = createContext({
+    searchFilter: { title: '', location: '' },
+    setSearchFilter: () => {},
+    isSearched: false,
+    setIsSearched: () => {},
+    jobs: [],
+    setJobs: () => {},
+    showRecruiterLogin: false,
+    setShowRecruiterLogin: () => {},
+    companyToken: null,
+    setCompanyToken: () => {},
+    companyData: null,
+    setCompanyData: () => {},
+    backendUrl: import.meta.env.VITE_BACKEND_URL || '',
+    userData: null,
+    setUserData: () => {},
+    userApplications: [],
+    setUserApplications: () => {},
+    fetchUserData: () => {},
+    fetchUserApplications: () => {},
+});
 
 export const AppContextProvider = (props) => {
 
@@ -80,6 +100,24 @@ export const AppContextProvider = (props) => {
         }
     }
 
+    //Function to fetch user's applied applications data
+    const fetchUserApplications = async ( ) => {
+        try {
+            const token = await getToken()
+
+            const {data} = await axios.get(backendUrl+'/api/users/applications',{headers:{Authorization: `Bearer ${token}`}})
+
+            if (data.success) {
+                setUserApplications(data.applications)
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+            }
+        }
+    
+
     useEffect(()=>{
         fetchJobs()
 
@@ -99,6 +137,7 @@ export const AppContextProvider = (props) => {
     useEffect(()=>{
         if (user) {
             fetchUserData()
+            fetchUserApplications()
         }
     },[user])
 
@@ -111,7 +150,10 @@ export const AppContextProvider = (props) => {
         companyData,setCompanyData,
         backendUrl,
         userData,setUserData,
-        userApplications,setUserApplications
+        userApplications,setUserApplications,
+        fetchUserData,
+        fetchUserApplications,
+        
     }
     return (
         <AppContext.Provider value={value}>

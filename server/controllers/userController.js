@@ -2,15 +2,25 @@ import JobApplication from "../models/jobApplication.js"
 import Job from "../models/Jobs.js"
 import User from "../models/User.js"
 import {v2 as cloudinary} from "cloudinary"
+import { clerkClient } from '@clerk/clerk-sdk-node'
 
 // Get user data
 export const getUserData = async(req, res) => {
     const userId = req.auth().userId
 
     try {
-        const user = await User.findById(userId)
+        let user = await User.findById(userId)
         if(!user){
-            return res.json({success: false, message:'User Not Found'})
+            // If user not found, create from Clerk data
+            const clerkUser = await clerkClient.users.getUser(userId)
+            const userData = {
+                _id: userId,
+                email: clerkUser.emailAddresses[0].emailAddress,
+                name: clerkUser.firstName + " " + clerkUser.lastName,
+                image: clerkUser.imageUrl,
+                resume: ''
+            }
+            user = await User.create(userData)
         }
         res.json({success:true,user})
     } catch (error) {
@@ -72,7 +82,7 @@ export const updateUserResume = async (req, res) =>{
  try {
     const userId = req.auth().userId
 
-    const resumeFile = req.resumeFile
+    const resumeFile = req.file
 
     const userData = await User.findById(userId)
 
