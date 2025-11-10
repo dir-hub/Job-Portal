@@ -40,7 +40,7 @@ const Dashboard = () => {
 text-black rounded pt-12'>
                                 <ul className='list-none m-0 p-2
 bg-white rounded-md border border-gray-200 text-sm'>
-                                    <li onClick={logout} className='py-1 px-2 cursor-pointer pr-10'>Logout</li>
+                                    <li onClick={logout} className='py-1 px-2 cursor-pointer pr-10 text-red-600'>Logout</li>
                                 </ul>
                             </div>
                         </div>

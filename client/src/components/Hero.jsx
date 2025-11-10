@@ -37,16 +37,16 @@ const Hero = () => {
                 </div>
             </div>
 
-            <div className='container 2xl:px-20 mx-auto mt-5'>
+            <div className='container 2xl:px-20 mx-auto mt-5 max-sm:p-2'>
                 <div className='border border-gray-300 shadow-md p-6 rounded-md flex'>
                     <div className='flex justify-center gap-10 lg:gap-16 flex-wrap'>
-                        <p className='font-medium'>Trusted by</p>
-                        <img className='h-6' src={assets.microsoft_logo} alt="" />
-                        <img className='h-6' src={assets.walmart_logo} alt="" />
-                        <img className='h-6' src={assets.accenture_logo} alt="" />
-                        <img className='h-6' src={assets.amazon_logo} alt="" />
-                        <img className='h-6' src={assets.samsung_logo} alt="" />
-                        <img className='h-6' src={assets.adobe_logo} alt="" />
+                        <p className='font-medium text-blue-500'>Trusted by</p>
+                        <img className='h-6 max-sm:h-4' src={assets.microsoft_logo} alt="" />
+                        <img className='h-6 max-sm:h-4' src={assets.walmart_logo} alt="" />
+                        <img className='h-6 max-sm:h-4' src={assets.accenture_logo} alt="" />
+                        <img className='h-6 max-sm:h-4' src={assets.amazon_logo} alt="" />
+                        <img className='h-6 max-sm:h-4' src={assets.samsung_logo} alt="" />
+                        <img className='h-6 max-sm:h-4' src={assets.adobe_logo} alt="" />
                     </div>
                 </div>
             </div>
