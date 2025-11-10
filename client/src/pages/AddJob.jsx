@@ -88,7 +88,7 @@ border-gray-300 rounded outline-none' onChange={e=>setLevel(e.target.value)}>
       <div>
         <p className='mb-2'>Job Salary</p>
         <input min={0} className='w-full px-3 py-2 border-2
-border-gray-300 rounded sm:w-[120px] outline-none' onChange={e => setSalary(e.target.value)} type="Number" placeholder='2500'/>
+border-gray-300 rounded sm:w-[120px] outline-none' onChange={e => setSalary(e.target.value)} type="Number" placeholder='25000'/>
       </div>
       <button className='w-28 py-3 mt-4 bg-black hover:bg-gray-900 cursor-pointer
 text-white rounded-md'>ADD</button>
