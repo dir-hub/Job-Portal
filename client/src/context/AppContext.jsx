@@ -13,6 +13,8 @@ export const AppContext = createContext({
     setIsSearched: () => {},
     jobs: [],
     setJobs: () => {},
+    isJobsLoading: true,
+    setIsJobsLoading: () => {},
     showRecruiterLogin: false,
     setShowRecruiterLogin: () => {},
     companyToken: null,
@@ -41,6 +43,7 @@ export const AppContextProvider = (props) => {
     });
     const [isSearched, setIsSearched] = useState(false);
     const [jobs,setJobs] = useState([]);
+    const [isJobsLoading, setIsJobsLoading] = useState(true);
     const [showRecruiterLogin,setShowRecruiterLogin] =useState(false)
 
     const [companyToken,setCompanyToken] = useState(null)
@@ -55,15 +58,18 @@ export const AppContextProvider = (props) => {
 
             if (data.success){
                 setJobs(data.jobs)
+                setIsJobsLoading(false)
                 console.log(data.jobs)
             }else{
                  toast.error(data.message)
+                 setIsJobsLoading(false)
             }
 
         } catch (error) {
             toast.error(error.message)
+            setIsJobsLoading(false)
         }
-       
+
     }
 
     // Function to fetch company data
@@ -145,6 +151,7 @@ export const AppContextProvider = (props) => {
         searchFilter,setSearchFilter,
         isSearched,setIsSearched,
         jobs,setJobs,
+        isJobsLoading,
         showRecruiterLogin,setShowRecruiterLogin,
         companyToken,setCompanyToken,
         companyData,setCompanyData,
@@ -153,7 +160,7 @@ export const AppContextProvider = (props) => {
         userApplications,setUserApplications,
         fetchUserData,
         fetchUserApplications,
-        
+
     }
     return (
         <AppContext.Provider value={value}>

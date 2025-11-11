@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { assets, JobCategories, JobLocations } from '../assets/assets';
 import JobCard from './JobCard';
+import Loading from './Loading';
 
 const JobListing = () => {
-    const {isSearched,searchFilter,setSearchFilter,jobs} = useContext(AppContext);
+    const {isSearched,searchFilter,setSearchFilter,jobs,isJobsLoading} = useContext(AppContext);
 
     const [showFilter,setShowFilter] = useState(false)
     const [currentPage,setCurrentPage] = useState(1)
@@ -94,11 +95,11 @@ border-red-200 px-4 py-1.5 rounded'>
     <section className='w-full lg:w-3/4 text-gray-800 max-lg:px-4'>
         <h3 className='font-medium text-3xl py-2' id='job-list'>Latest jobs</h3>
         <p className='mb-8'>Get your desired job from top companies</p>
-        <div className='grid grid-cols-2 xl:grid-cols-3 max-sm:grid-cols-1 gap-4'>
+        {isJobsLoading ? <Loading/> : filteredJobs.length > 0 ? <div className='grid grid-cols-2 xl:grid-cols-3 max-sm:grid-cols-1 gap-4'>
                 {filteredJobs.slice((currentPage-1)*6,currentPage*6).map((job,index) => (
                     <JobCard key={index} job={job} />
                 ))}
-        </div>
+        </div> : <p className='text-xl sm:text-2xl'>No jobs found</p> }
         {/*Pagination */}
         {filteredJobs.length > 0 && (
             <div className='flex items-center justify-center space-x-2 mt-10'>
