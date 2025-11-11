@@ -1,9 +1,30 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState, useEffect } from 'react'
 import { assets } from '../assets/assets.js'
 import { AppContext } from '../context/AppContext.jsx'
 
 
 const Hero = () => {
+
+    const SM_BREAKPOINT = 640;
+
+    const [isSmallScreen, setIsSmallScreen] = useState(
+        window.innerWidth <= SM_BREAKPOINT
+    );
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth <= SM_BREAKPOINT);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    const placeholderText = isSmallScreen ? 'Search' : 'Search for jobs';
+
     const { setSearchFilter, setIsSearched } = useContext(AppContext);
 
     const titleRef = useRef(null);
@@ -26,7 +47,7 @@ const Hero = () => {
                     <div className='flex items-center justify-between bg-white rounded text-gray-600 max-w-xl pl-4 mx-4 sm:mx-auto'>
                         <div className='flex items-center'>
                             <img className='h-4 sm:h-5' src={assets.search_icon} alt="" />
-                            <input type="text" placeholder='Search for jobs' className='max-sm:text-xs p-2 rounded outline-none w-full ' ref={titleRef} />
+                            <input type="text" placeholder={placeholderText} className='max-sm:text-xs p-2 rounded outline-none w-full ' ref={titleRef} />
                         </div>
                         <div className='flex items-center'>
                             <img className='h-4 sm:h-5' src={assets.location_icon} alt="" />

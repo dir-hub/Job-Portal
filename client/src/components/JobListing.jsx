@@ -50,7 +50,7 @@ border-blue-200 px-4 py-1.5 rounded'>
                     )}
                     {searchFilter.location && (
                         <span className='ml-2 inline-flex items-center gap-2.5 bg-red-50 border
-border-red-200 px-4 py-1.5 rounded'>
+border-red-200 px-4 py-1.5 rounded mt-2'>
                             {searchFilter.location}
                              <img onClick={e => setSearchFilter(prev => ({...prev,location:""}))} className='cursor-pointer' src={assets.cross_icon} alt="" />
                         </span>
