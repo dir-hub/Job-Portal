@@ -10,7 +10,7 @@ const JobCard = ({job}) => {
             <img className='h-8' src={job.companyId.image} alt="" />
         </div>
         <h4 className='font-medium text-xl mt-2 max-sm:text-lg'>{job.title}</h4>
-        <div className='flex items-center gap-3 mt-2 text-xs max-sm:flex-col'>
+        <div className='flex items-center gap-3 mt-2 text-xs'>
             <span className='bg-blue-50 border-blue-200 px-4 py-1.5 rounded'>{job.location}</span>
             <span className='bg-red-50 border-red-200 px-4 py-1.5 rounded'>{job.level}</span>
         </div>
