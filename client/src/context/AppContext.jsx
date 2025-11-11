@@ -26,6 +26,8 @@ export const AppContext = createContext({
     setUserData: () => {},
     userApplications: [],
     setUserApplications: () => {},
+    isUserApplicationsLoading: true,
+    setIsUserApplicationsLoading: () => {},
     fetchUserData: () => {},
     fetchUserApplications: () => {},
 });
@@ -51,6 +53,7 @@ export const AppContextProvider = (props) => {
 
     const [userData, setUserData] = useState(null)
     const [userApplications, setUserApplications] = useState([])
+    const [isUserApplicationsLoading, setIsUserApplicationsLoading] = useState(true)
     //Function to fetch jobs
     const fetchJobs = async () =>{
         try {
@@ -115,11 +118,14 @@ export const AppContextProvider = (props) => {
 
             if (data.success) {
                 setUserApplications(data.applications)
+                setIsUserApplicationsLoading(false)
             }else{
                 toast.error(data.message)
+                setIsUserApplicationsLoading(false)
             }
         } catch (error) {
             toast.error(error.message)
+            setIsUserApplicationsLoading(false)
             }
         }
     
@@ -158,6 +164,7 @@ export const AppContextProvider = (props) => {
         backendUrl,
         userData,setUserData,
         userApplications,setUserApplications,
+        isUserApplicationsLoading,
         fetchUserData,
         fetchUserApplications,
 
