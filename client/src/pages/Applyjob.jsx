@@ -135,15 +135,20 @@ text-white rounded cursor-pointer'>{isAlreadyApplied ? 'Already Applied' : 'Appl
 text-white rounded cursor-pointer mt-10'>{isAlreadyApplied ? 'Already Applied' : 'Apply Now'}</button>
             </div>
             {/*right section more jobs*/}
-            <div className='w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 space-y-5'>
-              <h2>More jobs from {jobData.companyId.name}</h2>
-              {jobs.filter(job =>job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job => {
+            {(() => {
+              const filteredJobs = jobs.filter(job => job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job => {
                 //set of applied jobsIds
                 const appliedJobsIds = new Set(userApplications.map(app => app.jobId && app.jobId._id))
                 // Return true if the user has not already applied for this job
                 return !appliedJobsIds.has(job._id)
-              }).slice(0,4).map((job,index) => <JobCard key={index} job={job}/>)}
-            </div>
+              }).slice(0,4);
+              return filteredJobs.length > 0 ? (
+                <div className='w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 space-y-5'>
+                  <h2>More jobs from {jobData.companyId.name}</h2>
+                  {filteredJobs.map((job,index) => <JobCard key={index} job={job}/>)}
+                </div>
+              ) : null;
+            })()}
           </div>
         </div>
       </div>
