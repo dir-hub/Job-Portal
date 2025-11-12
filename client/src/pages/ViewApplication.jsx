@@ -48,7 +48,7 @@ const ViewApplication = () => {
     fetchCompanyJobAppIications()
   }, [companyToken])
   return applicants ? applicants.length === 0 ? (
-  <div className='flex items-center justify-center h-[70vh]'><p className='text-xl sm:text-2xl'>No Applications Available</p></div>) : (
+    <div className='flex items-center justify-center h-[70vh]'><p className='text-xl sm:text-2xl'>No Applications Available</p></div>) : (
     <div className='container mx-auto p-4 max-sm:p-0.5'>
       <div>
         <table className='w-full bg-white border border-gray-200 text-sm sm:text-base'>
@@ -81,13 +81,14 @@ const ViewApplication = () => {
                   {applicant.status === 'Pending' ? (
                     <div className='relative inline-block text-center group'>
                       <button className='text-gray-500 action-button cursor-pointer'>...</button>
-                      <div className='z-10 hidden absolute right-0 md:left-0 top-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow group-hover:block'>
+                      <div className='z-10 hidden absolute right-0 top-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow group-hover:block origin-top-right'>
                         <button onClick={() => changeJobApplicationStatus(applicant._id, 'Accepted')} className='block w-full text-center px-4 py-2 text-blue-500 hover:bg-gray-100 cursor-pointer'>Accept</button>
                         <button onClick={() => changeJobApplicationStatus(applicant._id, 'Rejected')} className='block w-full text-center px-4 py-2 text-red-500 hover:bg-gray-100 cursor-pointer'>Reject</button>
                       </div>
+
                     </div>
                   ) : (
-                    <div className='text-center font-medium'>
+                    <div className={`text-center font-medium ${applicant.status === 'Accepted' ? 'text-green-400' : applicant.status === 'Rejected' ? 'text-red-400' : ''}`}>
                       {applicant.status}
                     </div>
                   )}
