@@ -54,10 +54,11 @@ It allows users to register, log in, post jobs, and apply for jobs — all throu
 
 ## ⚡ Installation & Setup  
 
-### 1️⃣ Clone the Repository  
+### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/job-portal.git
-cd job-portal
+git clone https://github.com/dir-hub/Job-Portal.git
+cd Job-Portal
+
 
 ###2️⃣ Setup the Frontend
 cd client
